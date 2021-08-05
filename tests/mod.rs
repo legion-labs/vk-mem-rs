@@ -2,7 +2,6 @@ extern crate ash;
 extern crate vk_mem;
 
 use ash::extensions::ext::DebugReport;
-use ash::version::{DeviceV1_0, EntryV1_0, InstanceV1_0};
 use std::os::raw::{c_char, c_void};
 
 fn extension_names() -> Vec<*const i8> {
@@ -65,7 +64,7 @@ impl TestHarness {
             .enabled_layer_names(&layers_names_raw)
             .enabled_extension_names(&extension_names_raw);
 
-        let entry = ash::Entry::new().unwrap();
+        let entry = unsafe { ash::Entry::new().unwrap() };
         let instance: ash::Instance = unsafe {
             entry
                 .create_instance(&create_info, None)
