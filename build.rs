@@ -89,6 +89,13 @@ fn main() {
             .flag("-Wno-reorder")
             .cpp_link_stdlib("stdc++")
             .cpp(true);
+
+        // We are using llvm and libc++ we can't link stdc++
+        if let Ok(cxx_flags) = env::var("CXXFLAGS") {
+            if cxx_flags.contains("stdlib=libc++") {
+                build.cpp_link_stdlib("c++");
+            }
+        }
     } else if target.contains("windows") && target.contains("gnu") {
         build
             .flag("-std=c++11")
